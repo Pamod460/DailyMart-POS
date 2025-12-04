@@ -245,3 +245,36 @@ form {
         padding-right: 1.5rem;
     }
 }
+
+/* Password Strength Indicators */
+.password-strength {
+    height: 4px;
+    width: 100%;
+    background-color: var(--gray-200);
+    margin-top: 0.5rem;
+    border-radius: 2px;
+    transition: all var(--transition-normal);
+}
+
+.strength-weak {
+    background-color: var(--accent-red);
+    width: 33%;
+}
+
+.strength-medium {
+    background-color: #F59E0B;
+    width: 66%;
+}
+
+.strength-strong {
+    background-color: #10B981;
+    width: 100%;
+}
+
+#strengthText {
+    display: block;
+    margin-top: 0.25rem;
+    font-size: 0.75rem;
+    color: var(--gray-500);
+    min-height: 1.25rem;
+}
