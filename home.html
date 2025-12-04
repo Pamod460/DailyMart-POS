@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="DailyMart POS System - Modern Point of Sale">
+    <title>DailyMart POS - Point of Sale</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/pos.css">
+    <link rel="stylesheet" href="assets/css/product-images.css">
+</head>
+
+<body>
+ 
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">
+                <i class="bi bi-shop"></i>
+                <h2>DailyMart</h2>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="#" class="nav-item active" data-page="products">
+                <i class="bi bi-grid-fill"></i>
+                <span>Products</span>
+            </a>
+            <a href="#" class="nav-item" data-page="customers">
+                <i class="bi bi-people-fill"></i>
+                <span>Customers</span>
+            </a>
+            <a href="#" class="nav-item" data-page="orders">
+                <i class="bi bi-receipt"></i>
+                <span>Order History</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-profile">
+                <div class="user-avatar">
+                    <i class="bi bi-person-circle"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name" id="sidebarUserName">Loading...</div>
+                    <div class="user-role">Cashier</div>
+                </div>
+            </div>
+            <button class="btn-logout" onclick="logout()">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+    </div>
+
+
+    <div class="main-content">
+      
+        <div class="topbar">
+            <div class="topbar-left">
+                <h1 id="pageTitle">Products</h1>
+            </div>
+            <div class="topbar-right">
+                <div class="search-box">
+                    <i class="bi bi-search"></i>
+                    <input type="text" id="searchInput" placeholder="Search products...">
+                </div>
+                <div class="user-menu">
+                    <span id="topBarUserName">User</span>
+                    <i class="bi bi-chevron-down"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-area">
+            <div class="page active" id="productsPage">
+                <div class="products-header">
+                    <h2>Browse Products</h2>
+                    <button class="btn-primary" onclick="toggleCart()">
+                        <i class="bi bi-cart3"></i>
+                        View Cart (<span id="cartCountHeader">0</span>)
+                    </button>
+                    <button class="btn-secondary" onclick="showAddProductModal()" style="margin-left: 10px;">
+                        <i class="bi bi-plus-circle"></i>
+                        Add Product
+                    </button>
+                </div>
+
+                <div class="category-filters" id="categoryFilters">
+                </div>
+                <div class="products-grid" id="productsGrid">
+                </div>
+            </div>
+
+            <div class="page" id="customersPage">
+                <div class="customers-header">
+                    <h2>Customer Management</h2>
+                    <button class="btn-primary" onclick="showAddCustomerModal()">
+                        <i class="bi bi-person-plus"></i>
+                        Add Customer
+                    </button>
+                </div>
+
+                <div class="customers-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="customersTableBody">
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="page" id="ordersPage">
+                <div class="customers-header">
+                    <h2>Order History</h2>
+                    <div class="search-box">
+                        <i class="bi bi-search"></i>
+                        <input type="text" id="orderSearchInput" placeholder="Search orders...">
+                    </div>
+                </div>
+
+                <div id="ordersContainer">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="cart-panel" id="cartPanel">
+        <div class="cart-header">
+            <h2>
+                <i class="bi bi-cart3"></i>
+                Shopping Cart
+                <span class="cart-count" id="cartCount">0</span>
+            </h2>
+            <button class="btn-close-cart" onclick="toggleCart()">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+
+        <div class="cart-items" id="cartItems">
+            <div class="cart-empty">
+                <i class="bi bi-cart-x"></i>
+                <p>Your cart is empty</p>
+            </div>
+        </div>
+
+        <div class="cart-footer">
+            <div class="cart-totals">
+                <div class="cart-total-row">
+                    <span>Subtotal:</span>
+                    <span id="cartSubtotal">LKR 0.00</span>
+                </div>
+                <div class="cart-total-row">
+                    <span>Tax (8%):</span>
+                    <span id="cartTax">LKR 0.00</span>
+                </div>
+                <div class="cart-total-row total">
+                    <span>Total:</span>
+                    <span id="cartTotal">LKR 0.00</span>
+                </div>
+            </div>
+            <button class="btn-checkout" id="btnCheckout" onclick="checkout()" disabled>
+                <i class="bi bi-credit-card"></i> Proceed to Checkout
+            </button>
+            <button class="btn-clear-cart" onclick="clearCart()">
+                <i class="bi bi-trash"></i> Clear Cart
+            </button>
+        </div>
+    </div>
+
+    <button class="floating-cart-btn" onclick="toggleCart()">
+        <i class="bi bi-cart3"></i>
+        <span class="cart-badge" id="floatingCartBadge">0</span>
+    </button>
+    <div class="modal" id="addProductModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New Product</h2>
+                <button class="btn-close-modal" onclick="closeAddProductModal()">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addProductForm" onsubmit="handleAddProduct(event)">
+                    <div class="form-group">
+                        <label for="productName">Product Name</label>
+                        <input type="text" id="productName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="productCategory">Category</label>
+                        <select id="productCategory" required>
+                            <option value="">Select Category</option>
+                            <option value="Bakery">Bakery</option>
+                            <option value="Beverages">Beverages</option>
+                            <option value="Dairy">Dairy</option>
+                            <option value="Fruits">Fruits</option>
+                            <option value="Groceries">Groceries</option>
+                            <option value="Meat">Meat</option>
+                            <option value="Vegetables">Vegetables</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="productPrice">Price (LKR)</label>
+                            <input type="number" id="productPrice" min="0" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="productStock">Initial Stock</label>
+                            <input type="number" id="productStock" min="0" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="productImage">Image URL</label>
+                        <input type="url" id="productImage" placeholder="https://example.com/image.jpg" required>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-secondary" onclick="closeAddProductModal()">Cancel</button>
+                        <button type="submit" class="btn-primary">Add Product</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/database.js"></script>
+    <script src="assets/js/products.js"></script>
+    <script src="assets/js/cart.js"></script>
+    <script src="assets/js/customers.js"></script>
+    <script src="assets/js/orders.js"></script>
+    <script src="assets/js/home.js"></script>
+</body>
+
+</html>
